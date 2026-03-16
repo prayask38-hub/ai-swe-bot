@@ -1,0 +1,321 @@
+html = open("templates/index.html", "w", encoding="utf-8")
+html.write("""
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI SWE Bot</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        body {
+            font-family: monospace;
+            background: #0d0d0d;
+            color: #e0e0e0;
+            min-height: 100vh
+        }
+
+        .header {
+            padding: 20px 30px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            align-items: center;
+            gap: 12px
+        }
+
+        .header h1 {
+            font-size: 18px;
+            color: #fff
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff88;
+            animation: pulse 2s infinite
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1
+            }
+
+            50% {
+                opacity: .3
+            }
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: calc(100vh - 61px)
+        }
+
+        .panel {
+            padding: 20px;
+            border-right: 1px solid #222;
+            display: flex;
+            flex-direction: column;
+            gap: 12px
+        }
+
+        .panel-title {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: .1em
+        }
+
+        textarea {
+            flex: 1;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-family: monospace;
+            font-size: 13px;
+            padding: 14px;
+            resize: none;
+            outline: none
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            border: none;
+            font-family: monospace;
+            font-size: 13px;
+            cursor: pointer
+        }
+
+        .btn-primary {
+            background: #00ff88;
+            color: #000;
+            font-weight: bold
+        }
+
+        .btn-secondary {
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border: 1px solid #333
+        }
+
+        .btn:disabled {
+            opacity: .4;
+            cursor: not-allowed
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px
+        }
+
+        .results {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px
+        }
+
+        .bug-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 12px;
+            border-left: 3px solid #ff4444
+        }
+
+        .bug-card.medium {
+            border-left-color: #ffaa00
+        }
+
+        .bug-card.low {
+            border-left-color: #4488ff
+        }
+
+        .bug-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px
+        }
+
+        .bug-desc {
+            font-size: 11px;
+            color: #888;
+            line-height: 1.5
+        }
+
+        .solution-card {
+            background: #0a1a0a;
+            border: 1px solid #1a3a1a;
+            border-radius: 6px;
+            padding: 10px;
+            margin-top: 6px
+        }
+
+        .solution-title {
+            font-size: 11px;
+            color: #00ff88;
+            margin-bottom: 4px
+        }
+
+        .solution-code {
+            font-size: 11px;
+            color: #aaa;
+            background: #111;
+            padding: 6px 8px;
+            border-radius: 4px;
+            margin-top: 4px
+        }
+
+        .roadmap-card {
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 6px;
+            padding: 14px
+        }
+
+        .roadmap-title {
+            font-size: 12px;
+            color: #00ff88;
+            font-weight: bold;
+            margin-bottom: 8px
+        }
+
+        .roadmap-item {
+            font-size: 11px;
+            color: #888;
+            padding: 3px 0;
+            border-bottom: 1px solid #1a1a1a
+        }
+
+        .status {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: #1a1a1a;
+            color: #666
+        }
+
+        .status.loading {
+            color: #ffaa00
+        }
+
+        .status.success {
+            color: #00ff88
+        }
+
+        .status.error {
+            color: #ff4444
+        }
+
+        .health.good,
+        .health.excellent {
+            background: #0a2a0a;
+            color: #00ff88
+        }
+
+        .health.fair {
+            background: #2a1a00;
+            color: #ffaa00
+        }
+
+        .health.poor {
+            background: #2a0a0a;
+            color: #ff4444
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="dot"></div>
+        <h1>AI SWE Bot — by Prayas</h1>
+        <span class="status" id="status">Ready</span>
+    </div>
+    <div class="container">
+        <div class="panel">
+            <div class="panel-title">Your code</div>
+            <textarea id="code" placeholder="Paste your buggy code here..."></textarea>
+            <div class="btn-row">
+                <button class="btn btn-primary" onclick="analyze()">Analyze bugs</button>
+                <button class="btn btn-secondary" id="fix-btn" onclick="fixCode()" disabled>Auto fix all</button>
+                <button class="btn btn-secondary" onclick="clearAll()">Clear</button>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-title">Results</div>
+            <div class="results" id="results">
+                <div style="color:#333;font-size:12px;margin-top:40px;text-align:center">Paste code and click Analyze
+                    bugs</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentBugs = [];
+        let currentSolutions = [];
+        let currentLanguage = "";
+        function setStatus(text, type = "") {
+            const el = document.getElementById("status");
+            el.textContent = text;
+            el.className = "status " + type;
+        }
+        async function analyze() {
+            const code = document.getElementById("code").value.trim();
+            if (!code) return;
+            setStatus("Analyzing...", "loading");
+            document.getElementById("results").innerHTML = "<div style='color:#666;font-size:12px'>Scanning for bugs...</div>";
+            document.getElementById("fix-btn").disabled = true;
+            try {
+                const res = await fetch("/analyze", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code }) });
+                const data = await res.json();
+                currentBugs = data.bugs;
+                currentSolutions = data.solutions;
+                currentLanguage = data.language;
+                let html = "<div style='font-size:11px;color:#666;margin-bottom:8px'>Language: <span style='color:#fff'>" + data.language.toUpperCase() + "</span> | Bugs found: <span style='color:#ff4444'>" + data.bugs.length + "</span></div>";
+                data.bugs.forEach((bug, i) => {
+                    const solutions = data.solutions[i]?.solutions || [];
+                    html += "<div class='bug-card " + bug.severity + "'><div class='bug-title'>Bug #" + bug.bug_id + " — Line " + bug.line + " — " + bug.type + "</div><div class='bug-desc'>" + bug.description + "</div>";
+                    solutions.forEach(s => { html += "<div class='solution-card'><div class='solution-title'>Solution " + s.solution_id + ": " + s.approach + "</div><div class='bug-desc'>" + s.explanation + "</div><div class='solution-code'>" + s.fixed_code + "</div></div>"; });
+                    html += "</div>";
+                });
+                document.getElementById("results").innerHTML = html;
+                document.getElementById("fix-btn").disabled = false;
+                setStatus("Found " + data.bugs.length + " bugs", "error");
+            } catch (e) { setStatus("Error", "error"); }
+        }
+        async function fixCode() {
+            const code = document.getElementById("code").value.trim();
+            setStatus("Auto-fixing...", "loading");
+            try {
+                const res = await fetch("/fix", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ code, bugs: currentBugs, solutions: currentSolutions, language: currentLanguage }) });
+                const data = await res.json();
+                document.getElementById("code").value = data.fixed_code;
+                let html = "<div class='roadmap-card'><div class='roadmap-title'>Fix complete</div>";
+                data.roadmap.steps_taken.forEach(s => { html += "<div class='roadmap-item'>" + s + "</div>"; });
+                html += "</div>";
+                document.getElementById("results").innerHTML = html;
+                setStatus("All fixed!", "success");
+            } catch (e) { setStatus("Error", "error"); }
+        }
+        function clearAll() {
+            document.getElementById("code").value = "";
+            document.getElementById("results").innerHTML = "<div style='color:#333;font-size:12px;margin-top:40px;text-align:center'>Paste code and click Analyze bugs</div>";
+            document.getElementById("fix-btn").disabled = true;
+            setStatus("Ready", "");
+            currentBugs = []; currentSolutions = []; currentLanguage = "";
+        }
+    </script>
+</body>
+
+</html>
