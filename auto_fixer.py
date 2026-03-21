@@ -7,7 +7,7 @@ import tempfile
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("GROK_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def run_code(code: str):
     with tempfile.NamedTemporaryFile(mode='w', suffix='.py', delete=False) as f:
@@ -31,7 +31,13 @@ def run_code(code: str):
 
 def apply_fix(code: str, bug_line: int, fixed_line: str):
     lines = code.split('\n')
-    lines[bug_line - 1] = fixed_line
+    
+    # If fix is multi-line, replace the buggy line with all fix lines
+    fix_lines = fixed_line.split('\n')
+    
+    # Remove the buggy line and insert fix lines in its place
+    lines = lines[:bug_line - 1] + fix_lines + lines[bug_line:]
+    
     return '\n'.join(lines)
 
 def auto_fix_loop(code: str, bugs: list, solutions_list: list):

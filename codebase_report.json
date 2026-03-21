@@ -1,0 +1,1779 @@
+{
+  "root_path": "c:\\Users\\praya\\OneDrive\\Desktop\\ai-swe-bot",
+  "total_files": 36,
+  "languages": [
+    "python"
+  ],
+  "total_lines": 10035,
+  "dependency_graph": {
+    "api_hub.py": {
+      "language": "python",
+      "lines": 299,
+      "imports": [
+        "import os",
+        "import json",
+        "import requests",
+        "from datetime import datetime",
+        "from dotenv import load_dotenv",
+        "from groq import Groq",
+        "import boto3"
+      ],
+      "functions": [
+        {
+          "line": 12,
+          "signature": "class GitHubAPI:"
+        },
+        {
+          "line": 13,
+          "signature": "def __init__(self):"
+        },
+        {
+          "line": 21,
+          "signature": "def get_repos(self):"
+        },
+        {
+          "line": 28,
+          "signature": "def create_issue(self, repo: str, title: str, body: str):"
+        },
+        {
+          "line": 39,
+          "signature": "def get_username(self):"
+        },
+        {
+          "line": 45,
+          "signature": "def get_commits(self, repo: str, limit: int = 5):"
+        },
+        {
+          "line": 54,
+          "signature": "def create_pull_request(self, repo: str, title: str, body: str, head: str, base:"
+        },
+        {
+          "line": 65,
+          "signature": "class SlackAPI:"
+        },
+        {
+          "line": 66,
+          "signature": "def __init__(self):"
+        },
+        {
+          "line": 73,
+          "signature": "def send_message(self, channel: str, message: str):"
+        },
+        {
+          "line": 85,
+          "signature": "def send_bug_report(self, channel: str, bug: dict, file_path: str):"
+        },
+        {
+          "line": 99,
+          "signature": "class NotionAPI:"
+        },
+        {
+          "line": 100,
+          "signature": "def __init__(self):"
+        },
+        {
+          "line": 108,
+          "signature": "def create_page(self, database_id: str, title: str, content: str):"
+        },
+        {
+          "line": 136,
+          "signature": "class AWSAPI:"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "app.py": {
+      "language": "python",
+      "lines": 100,
+      "imports": [
+        "from flask import Flask, render_template, request, jsonify",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import json",
+        "from bug_detector import detect_bugs",
+        "from solution_generator import generate_solutions",
+        "from auto_fixer import run_code, apply_fix",
+        "from roadmap_generator import generate_roadmap, save_roadmap",
+        "from language_detector import detect_language",
+        "from storage import init_db, save_session, save_bug, save_successful_fix, print_stats",
+        "from storage import get_all_sessions"
+      ],
+      "functions": [
+        {
+          "line": 17,
+          "signature": "def index():"
+        },
+        {
+          "line": 21,
+          "signature": "def analyze():"
+        },
+        {
+          "line": 43,
+          "signature": "def fix():"
+        },
+        {
+          "line": 92,
+          "signature": "def stats():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "auto_fixer.py",
+        "bug_detector.py",
+        "language_detector.py",
+        "roadmap_generator.py",
+        "solution_generator.py",
+        "storage.py"
+      ]
+    },
+    "auto_fixer.py": {
+      "language": "python",
+      "lines": 116,
+      "imports": [
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import json",
+        "import subprocess",
+        "import tempfile"
+      ],
+      "functions": [
+        {
+          "line": 12,
+          "signature": "def run_code(code: str):"
+        },
+        {
+          "line": 32,
+          "signature": "def apply_fix(code: str, bug_line: int, fixed_line: str):"
+        },
+        {
+          "line": 43,
+          "signature": "def auto_fix_loop(code: str, bugs: list, solutions_list: list):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "biometric_authentication.py": {
+      "language": "python",
+      "lines": 321,
+      "imports": [
+        "import os",
+        "import cv2",
+        "import json",
+        "import hashlib",
+        "import sqlite3",
+        "import numpy as np",
+        "from datetime import datetime",
+        "from dotenv import load_dotenv",
+        "import getpass"
+      ],
+      "functions": [
+        {
+          "line": 14,
+          "signature": "def init_biometric_db():"
+        },
+        {
+          "line": 42,
+          "signature": "def capture_face():"
+        },
+        {
+          "line": 93,
+          "signature": "def compute_face_hash(face_frame) -> str:"
+        },
+        {
+          "line": 98,
+          "signature": "def enroll_user(user_id: str = \"prayas\"):"
+        },
+        {
+          "line": 136,
+          "signature": "def authenticate_user(user_id: str = \"prayas\") -> bool:"
+        },
+        {
+          "line": 186,
+          "signature": "def compare_hashes(hash1: str, hash2: str) -> int:"
+        },
+        {
+          "line": 190,
+          "signature": "def update_auth_success(user_id: str):"
+        },
+        {
+          "line": 201,
+          "signature": "def update_auth_failure(user_id: str):"
+        },
+        {
+          "line": 212,
+          "signature": "def log_auth_attempt(user_id: str, auth_type: str, success: bool, details: str):"
+        },
+        {
+          "line": 223,
+          "signature": "def pin_auth(user_id: str = \"prayas\") -> bool:"
+        },
+        {
+          "line": 238,
+          "signature": "def multi_factor_auth(user_id: str = \"prayas\") -> bool:"
+        },
+        {
+          "line": 262,
+          "signature": "def get_auth_stats():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "blockchain_logger.py": {
+      "language": "python",
+      "lines": 283,
+      "imports": [
+        "import hashlib",
+        "import json",
+        "import os",
+        "import sqlite3",
+        "from datetime import datetime",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 12,
+          "signature": "def init_blockchain_db():"
+        },
+        {
+          "line": 34,
+          "signature": "def get_last_block():"
+        },
+        {
+          "line": 47,
+          "signature": "def calculate_hash(block_number: int, timestamp: str, action_type: str,"
+        },
+        {
+          "line": 52,
+          "signature": "def log_action(action_type: str, action_data: dict, user_consent: bool = True):"
+        },
+        {
+          "line": 91,
+          "signature": "def verify_chain():"
+        },
+        {
+          "line": 146,
+          "signature": "def get_audit_trail(action_type: str = None, limit: int = 20):"
+        },
+        {
+          "line": 172,
+          "signature": "def print_audit_trail(action_type: str = None):"
+        },
+        {
+          "line": 204,
+          "signature": "def get_blockchain_stats():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py",
+        "computer_use.py",
+        "sandbox.py"
+      ]
+    },
+    "browser_automation.py": {
+      "language": "python",
+      "lines": 270,
+      "imports": [
+        "import asyncio",
+        "import os",
+        "import json",
+        "from playwright.async_api import async_playwright",
+        "from groq import Groq",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "bug_detector.py": {
+      "language": "python",
+      "lines": 65,
+      "imports": [
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import json"
+      ],
+      "functions": [
+        {
+          "line": 10,
+          "signature": "def detect_bugs(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 44,
+          "signature": "def calculate_average(numbers):"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "codebase_analyzer.py": {
+      "language": "python",
+      "lines": 364,
+      "imports": [
+        "import os",
+        "import json",
+        "import hashlib",
+        "from pathlib import Path",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from typing import Optional"
+      ],
+      "functions": [
+        {
+          "line": 23,
+          "signature": "def scan_codebase(root_path: str, max_files: int = 100):"
+        },
+        {
+          "line": 52,
+          "signature": "def read_file_content(file_info: dict):"
+        },
+        {
+          "line": 65,
+          "signature": "def extract_dependencies(content: str, language: str):"
+        },
+        {
+          "line": 86,
+          "signature": "def extract_functions(content: str, language: str):"
+        },
+        {
+          "line": 107,
+          "signature": "def build_dependency_graph(files: list):"
+        },
+        {
+          "line": 135,
+          "signature": "def analyze_codebase_with_ai(files: list, graph: dict, query: str = \"Find all bu"
+        },
+        {
+          "line": 221,
+          "signature": "def find_cross_file_bugs(files: list, graph: dict):"
+        },
+        {
+          "line": 263,
+          "signature": "def generate_codebase_report(root_path: str, query: str = \"Find all bugs and iss"
+        },
+        {
+          "line": 303,
+          "signature": "def print_report(report: dict):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "code_quality.py": {
+      "language": "python",
+      "lines": 243,
+      "imports": [
+        "import os",
+        "import json",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import sqlite3"
+      ],
+      "functions": [
+        {
+          "line": 10,
+          "signature": "def analyze_code_quality(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 55,
+          "signature": "def scan_security(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 96,
+          "signature": "def track_technical_debt(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 137,
+          "signature": "def full_code_review(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 155,
+          "signature": "def print_report(report: dict):"
+        },
+        {
+          "line": 219,
+          "signature": "def get_user(user_id):"
+        },
+        {
+          "line": 226,
+          "signature": "def calculate(a, b, c, d, e, f, g):"
+        },
+        {
+          "line": 235,
+          "signature": "def x(y):"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "collaborative_ai.py": {
+      "language": "python",
+      "lines": 302,
+      "imports": [
+        "import asyncio",
+        "import aiohttp",
+        "import json",
+        "import os",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import sqlite3"
+      ],
+      "functions": [
+        {
+          "line": 223,
+          "signature": "def print_collaborative_report(report: dict):"
+        },
+        {
+          "line": 269,
+          "signature": "def process_payment(user_id, amount, card_number):"
+        },
+        {
+          "line": 288,
+          "signature": "def calculate_discount(price, discount):"
+        },
+        {
+          "line": 291,
+          "signature": "def send_receipt(email, amount):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "computer_use.py": {
+      "language": "python",
+      "lines": 192,
+      "imports": [
+        "import pyautogui",
+        "import time",
+        "import json",
+        "import os",
+        "import subprocess",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import pyperclip"
+      ],
+      "functions": [
+        {
+          "line": 16,
+          "signature": "def get_screen_size():"
+        },
+        {
+          "line": 20,
+          "signature": "def ask_permission(action: str):"
+        },
+        {
+          "line": 25,
+          "signature": "def execute_action(action: dict):"
+        },
+        {
+          "line": 97,
+          "signature": "def plan_task(task: str):"
+        },
+        {
+          "line": 150,
+          "signature": "def run_task(task: str):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "creative_suite.py": {
+      "language": "python",
+      "lines": 488,
+      "imports": [
+        "import os",
+        "import json",
+        "from PIL import Image, ImageDraw, ImageFont, ImageFilter",
+        "from reportlab.pdfgen import canvas",
+        "from reportlab.lib.pagesizes import A4",
+        "from reportlab.lib import colors",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from datetime import datetime",
+        "import random"
+      ],
+      "functions": [
+        {
+          "line": 18,
+          "signature": "def ai_design_plan(description: str, design_type: str):"
+        },
+        {
+          "line": 80,
+          "signature": "def hex_to_rgb(hex_color: str):"
+        },
+        {
+          "line": 89,
+          "signature": "def generate_logo(company_name: str, tagline: str = \"\", style: str = \"modern\"):"
+        },
+        {
+          "line": 140,
+          "signature": "def generate_banner(title: str, subtitle: str = \"\", cta: str = \"Get Started\"):"
+        },
+        {
+          "line": 196,
+          "signature": "def generate_ui_mockup(app_name: str, screen_type: str = \"dashboard\"):"
+        },
+        {
+          "line": 320,
+          "signature": "def generate_pdf_report(title: str, content: dict):"
+        },
+        {
+          "line": 389,
+          "signature": "def generate_3d_model_plan(object_description: str):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "device_server.py": {
+      "language": "python",
+      "lines": 235,
+      "imports": [
+        "import asyncio",
+        "import websockets",
+        "import json",
+        "import os",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from smart_computer_use import run_task",
+        "import pyautogui",
+        "import time",
+        "import pyautogui",
+        "import pyautogui",
+        "import base64",
+        "from io import BytesIO",
+        "import socket",
+        "import asyncio"
+      ],
+      "functions": [
+        {
+          "line": 203,
+          "signature": "def test_client():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py",
+        "computer_use.py",
+        "smart_computer_use.py"
+      ]
+    },
+    "enterprise_security.py": {
+      "language": "python",
+      "lines": 425,
+      "imports": [
+        "import os",
+        "import json",
+        "import hashlib",
+        "import secrets",
+        "import sqlite3",
+        "from datetime import datetime, timedelta",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import sqlite3",
+        "import os"
+      ],
+      "functions": [
+        {
+          "line": 15,
+          "signature": "def init_security_db():"
+        },
+        {
+          "line": 69,
+          "signature": "def generate_secure_token(length: int = 32):"
+        },
+        {
+          "line": 72,
+          "signature": "def hash_sensitive_data(data: str):"
+        },
+        {
+          "line": 77,
+          "signature": "def verify_hashed_data(data: str, hashed: str):"
+        },
+        {
+          "line": 85,
+          "signature": "def set_security_policy(policy_name: str, policy_value: str):"
+        },
+        {
+          "line": 99,
+          "signature": "def get_security_policy(policy_name: str):"
+        },
+        {
+          "line": 107,
+          "signature": "def grant_access(user_id: str, resource: str, permission: str, expires_hours: in"
+        },
+        {
+          "line": 124,
+          "signature": "def check_access(user_id: str, resource: str, permission: str):"
+        },
+        {
+          "line": 143,
+          "signature": "def revoke_access(user_id: str, resource: str):"
+        },
+        {
+          "line": 156,
+          "signature": "def log_security_event(event_type: str, severity: str, user_id: str,"
+        },
+        {
+          "line": 169,
+          "signature": "def run_gdpr_compliance_check():"
+        },
+        {
+          "line": 205,
+          "signature": "def run_soc2_compliance_check():"
+        },
+        {
+          "line": 231,
+          "signature": "def scan_code_security(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 285,
+          "signature": "def generate_security_report():"
+        },
+        {
+          "line": 326,
+          "signature": "def print_access_report():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py",
+        "storage.py"
+      ]
+    },
+    "github_integration.py": {
+      "language": "python",
+      "lines": 252,
+      "imports": [
+        "import os",
+        "import git",
+        "import json",
+        "from github import Github, Auth",
+        "from dotenv import load_dotenv",
+        "from groq import Groq",
+        "from datetime import datetime"
+      ],
+      "functions": [
+        {
+          "line": 13,
+          "signature": "def get_github_client():"
+        },
+        {
+          "line": 23,
+          "signature": "def list_repos():"
+        },
+        {
+          "line": 34,
+          "signature": "def get_repo_files(repo_name: str):"
+        },
+        {
+          "line": 53,
+          "signature": "def get_file_content(repo_name: str, file_path: str):"
+        },
+        {
+          "line": 63,
+          "signature": "def analyze_repo_for_bugs(repo_name: str):"
+        },
+        {
+          "line": 142,
+          "signature": "def create_issue_for_bug(repo_name: str, bug: dict, file_path: str):"
+        },
+        {
+          "line": 171,
+          "signature": "def commit_fixed_code(repo_path: str, file_path: str, fixed_content: str, bug_de"
+        },
+        {
+          "line": 192,
+          "signature": "def get_pull_requests(repo_name: str):"
+        },
+        {
+          "line": 204,
+          "signature": "def init_local_repo(folder_path: str, repo_name: str):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "knowledge_base.py": {
+      "language": "python",
+      "lines": 496,
+      "imports": [],
+      "functions": [
+        {
+          "line": 435,
+          "signature": "def get_app_knowledge(app: str):"
+        },
+        {
+          "line": 459,
+          "signature": "def get_shortcut(app: str, action: str):"
+        },
+        {
+          "line": 464,
+          "signature": "def get_task_steps(app: str, task: str):"
+        },
+        {
+          "line": 472,
+          "signature": "def format_knowledge_for_prompt(app: str):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "language_detector.py": {
+      "language": "python",
+      "lines": 161,
+      "imports": [
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import json"
+      ],
+      "functions": [
+        {
+          "line": 19,
+          "signature": "def detect_language(code: str):"
+        },
+        {
+          "line": 47,
+          "signature": "def detect_bugs_multilang(code: str, language: str):"
+        },
+        {
+          "line": 87,
+          "signature": "def analyze_code(code: str):"
+        },
+        {
+          "line": 112,
+          "signature": "def greet(name)"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "learning_engine.py": {
+      "language": "python",
+      "lines": 329,
+      "imports": [
+        "import sqlite3",
+        "import json",
+        "import os",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 14,
+          "signature": "def init_learning_db():"
+        },
+        {
+          "line": 55,
+          "signature": "def learn_from_fix(language: str, bug_type: str, bug_pattern: str, successful_fi"
+        },
+        {
+          "line": 88,
+          "signature": "def get_learned_fix(language: str, bug_type: str, bug_pattern: str):"
+        },
+        {
+          "line": 113,
+          "signature": "def learn_coding_style(code: str, language: str):"
+        },
+        {
+          "line": 149,
+          "signature": "def save_coding_style(style: dict):"
+        },
+        {
+          "line": 166,
+          "signature": "def get_coding_style():"
+        },
+        {
+          "line": 178,
+          "signature": "def learn_user_pattern(pattern_type: str, pattern_value: str):"
+        },
+        {
+          "line": 204,
+          "signature": "def get_smart_suggestion(language: str, bug_type: str, bug_description: str):"
+        },
+        {
+          "line": 252,
+          "signature": "def print_learning_stats():"
+        },
+        {
+          "line": 312,
+          "signature": "def calculate_average(numbers):"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "mobile_control.py": {
+      "language": "python",
+      "lines": 349,
+      "imports": [
+        "import os",
+        "import json",
+        "import socket",
+        "import qrcode",
+        "import threading",
+        "from datetime import datetime",
+        "from flask import Flask, request, jsonify",
+        "from flask_cors import CORS",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import pyautogui",
+        "import time",
+        "import subprocess",
+        "import sqlite3"
+      ],
+      "functions": [
+        {
+          "line": 22,
+          "signature": "def get_local_ip():"
+        },
+        {
+          "line": 33,
+          "signature": "def generate_qr_code(url: str):"
+        },
+        {
+          "line": 42,
+          "signature": "def index():"
+        },
+        {
+          "line": 59,
+          "signature": "def status():"
+        },
+        {
+          "line": 70,
+          "signature": "def fix_code():"
+        },
+        {
+          "line": 131,
+          "signature": "def run_task():"
+        },
+        {
+          "line": 182,
+          "signature": "def voice_command():"
+        },
+        {
+          "line": 229,
+          "signature": "def computer_control():"
+        },
+        {
+          "line": 291,
+          "signature": "def history():"
+        },
+        {
+          "line": 298,
+          "signature": "def stats():"
+        },
+        {
+          "line": 320,
+          "signature": "def start_mobile_server(port: int = 5001):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "multi_ai.py": {
+      "language": "python",
+      "lines": 232,
+      "imports": [
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import json"
+      ],
+      "functions": [
+        {
+          "line": 10,
+          "signature": "def ask_groq(prompt: str):"
+        },
+        {
+          "line": 21,
+          "signature": "def ask_groq_fast(prompt: str):"
+        },
+        {
+          "line": 32,
+          "signature": "def clean_json(raw: str):"
+        },
+        {
+          "line": 42,
+          "signature": "def ask_both(prompt: str):"
+        },
+        {
+          "line": 49,
+          "signature": "def pick_best_answer(answer1: str, answer2: str, context: str):"
+        },
+        {
+          "line": 87,
+          "signature": "def multi_ai_analyze(code: str, language: str):"
+        },
+        {
+          "line": 142,
+          "signature": "def multi_ai_fix(code: str, bug: dict):"
+        },
+        {
+          "line": 202,
+          "signature": "def calculate_average(numbers):"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "multi_ai_agent.py": {
+      "language": "python",
+      "lines": 319,
+      "imports": [
+        "import asyncio",
+        "import aiohttp",
+        "import json",
+        "import os",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 218,
+          "signature": "def generate_sprint_report(project: dict, results: dict):"
+        },
+        {
+          "line": 264,
+          "signature": "def print_team_summary(results: dict):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "multi_model_ai.py": {
+      "language": "python",
+      "lines": 340,
+      "imports": [
+        "import os",
+        "import json",
+        "import base64",
+        "import pyautogui",
+        "from PIL import Image, ImageEnhance, ImageFilter",
+        "from io import BytesIO",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import pytesseract",
+        "import time",
+        "import time"
+      ],
+      "functions": [
+        {
+          "line": 14,
+          "signature": "def image_to_base64(image: Image.Image) -> str:"
+        },
+        {
+          "line": 19,
+          "signature": "def take_screenshot():"
+        },
+        {
+          "line": 23,
+          "signature": "def enhance_image(image: Image.Image) -> Image.Image:"
+        },
+        {
+          "line": 31,
+          "signature": "def extract_text_from_image(image: Image.Image) -> str:"
+        },
+        {
+          "line": 40,
+          "signature": "def analyze_screenshot_for_bugs(screenshot: Image.Image = None) -> dict:"
+        },
+        {
+          "line": 101,
+          "signature": "def analyze_diagram(image_path: str) -> dict:"
+        },
+        {
+          "line": 148,
+          "signature": "def analyze_ui_screenshot(screenshot: Image.Image = None) -> dict:"
+        },
+        {
+          "line": 197,
+          "signature": "def plan_from_mockup(image_path: str) -> dict:"
+        },
+        {
+          "line": 253,
+          "signature": "def visual_bug_detection():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "network_manager.py": {
+      "language": "python",
+      "lines": 352,
+      "imports": [
+        "import os",
+        "import json",
+        "import socket",
+        "import subprocess",
+        "import psutil",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import time",
+        "import urllib.request"
+      ],
+      "functions": [
+        {
+          "line": 14,
+          "signature": "def get_network_info():"
+        },
+        {
+          "line": 51,
+          "signature": "def get_wifi_info():"
+        },
+        {
+          "line": 79,
+          "signature": "def scan_open_ports(host: str = \"localhost\", ports: list = None):"
+        },
+        {
+          "line": 107,
+          "signature": "def check_internet_connection():"
+        },
+        {
+          "line": 137,
+          "signature": "def network_speed_test():"
+        },
+        {
+          "line": 169,
+          "signature": "def ai_network_diagnosis(network_info: dict, wifi_info: dict, port_scan: dict):"
+        },
+        {
+          "line": 229,
+          "signature": "def auto_troubleshoot():"
+        },
+        {
+          "line": 266,
+          "signature": "def print_network_report(info: dict, wifi: dict, diagnosis: dict):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "performance_dashboard.py": {
+      "language": "python",
+      "lines": 319,
+      "imports": [
+        "import os",
+        "import json",
+        "import sqlite3",
+        "import psutil",
+        "import time",
+        "from datetime import datetime, timedelta",
+        "from dotenv import load_dotenv",
+        "import subprocess"
+      ],
+      "functions": [
+        {
+          "line": 13,
+          "signature": "def get_system_metrics():"
+        },
+        {
+          "line": 29,
+          "signature": "def get_bot_stats():"
+        },
+        {
+          "line": 91,
+          "signature": "def get_error_patterns():"
+        },
+        {
+          "line": 107,
+          "signature": "def generate_html_dashboard():"
+        },
+        {
+          "line": 263,
+          "signature": "def open_dashboard():"
+        },
+        {
+          "line": 270,
+          "signature": "def print_terminal_dashboard():"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "predictive_analysis.py": {
+      "language": "python",
+      "lines": 293,
+      "imports": [
+        "import os",
+        "import json",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import sqlite3",
+        "from datetime import datetime"
+      ],
+      "functions": [
+        {
+          "line": 13,
+          "signature": "def get_historical_patterns():"
+        },
+        {
+          "line": 27,
+          "signature": "def predict_errors(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 101,
+          "signature": "def suggest_optimizations(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 148,
+          "signature": "def detect_bottlenecks(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 189,
+          "signature": "def full_predictive_analysis(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 207,
+          "signature": "def print_analysis(result: dict):"
+        },
+        {
+          "line": 267,
+          "signature": "def process_users(user_ids):"
+        },
+        {
+          "line": 278,
+          "signature": "def calculate_stats(data):"
+        },
+        {
+          "line": 285,
+          "signature": "def read_config():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "roadmap_generator.py": {
+      "language": "python",
+      "lines": 129,
+      "imports": [
+        "import os",
+        "import json",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 11,
+          "signature": "def generate_roadmap(original_code: str, bugs: list, fixes_applied: list):"
+        },
+        {
+          "line": 70,
+          "signature": "def save_roadmap(roadmap: dict, filename: str = \"roadmap.md\"):"
+        },
+        {
+          "line": 91,
+          "signature": "def calculate_average(numbers):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "sandbox.py": {
+      "language": "python",
+      "lines": 211,
+      "imports": [
+        "import docker",
+        "import os",
+        "import json",
+        "import tempfile",
+        "import tarfile",
+        "import io",
+        "from datetime import datetime",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 19,
+          "signature": "def pull_sandbox_image():"
+        },
+        {
+          "line": 30,
+          "signature": "def run_code_in_sandbox(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 73,
+          "signature": "def run_file_in_sandbox(file_path: str, language: str = \"python\"):"
+        },
+        {
+          "line": 128,
+          "signature": "def run_with_rollback(code: str, original_code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 153,
+          "signature": "def test_sandbox():"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "scientific_computing.py": {
+      "language": "python",
+      "lines": 333,
+      "imports": [
+        "import os",
+        "import json",
+        "import numpy as np",
+        "import pandas as pd",
+        "import matplotlib.pyplot as plt",
+        "import matplotlib",
+        "from numpy import percentile",
+        "from sklearn.linear_model import LinearRegression",
+        "from sklearn.cluster import KMeans",
+        "from sklearn.preprocessing import StandardScaler",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from datetime import datetime"
+      ],
+      "functions": [
+        {
+          "line": 20,
+          "signature": "def analyze_data(data: list, column_names: list = None):"
+        },
+        {
+          "line": 45,
+          "signature": "def detect_outliers(data: list, threshold: float = 2.0):"
+        },
+        {
+          "line": 62,
+          "signature": "def linear_regression_analysis(x_data: list, y_data: list, x_label: str = \"X\", y"
+        },
+        {
+          "line": 107,
+          "signature": "def cluster_analysis(data: list, n_clusters: int = 3):"
+        },
+        {
+          "line": 137,
+          "signature": "def visualize_data(data: list, chart_type: str = \"histogram\", title: str = \"Data"
+        },
+        {
+          "line": 186,
+          "signature": "def ai_data_insights(data: list, analysis: dict):"
+        },
+        {
+          "line": 223,
+          "signature": "def automate_research(topic: str):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "sde_agent.py": {
+      "language": "python",
+      "lines": 613,
+      "imports": [
+        "import os",
+        "import json",
+        "import threading",
+        "import time",
+        "from datetime import datetime",
+        "from dotenv import load_dotenv",
+        "from groq import Groq",
+        "from sandbox import run_code_in_sandbox, run_with_rollback",
+        "from api_hub import GitHubAPI",
+        "from github_integration import get_repo_files, get_file_content, analyze_repo_for_bugs",
+        "from bug_detector import detect_bugs",
+        "from solution_generator import generate_solutions",
+        "from auto_fixer import run_code, apply_fix",
+        "from smart_ai import chain_of_thought_analysis, self_correcting_solution",
+        "from multi_ai import multi_ai_analyze",
+        "from learning_engine import init_learning_db, learn_from_fix, get_smart_suggestion, learn_coding_style",
+        "from predictive_analysis import full_predictive_analysis",
+        "from language_detector import detect_language",
+        "from sde_replacement import read_ticket, write_code, write_tests, run_tests, review_code, respond_to_review",
+        "from code_quality import full_code_review"
+      ],
+      "functions": [
+        {
+          "line": 43,
+          "signature": "class SDEAgent:"
+        },
+        {
+          "line": 44,
+          "signature": "def __init__(self, name: str = \"Prayas AI Engineer\"):"
+        },
+        {
+          "line": 81,
+          "signature": "def log(self, message: str, level: str = \"info\"):"
+        },
+        {
+          "line": 92,
+          "signature": "def understand_task(self, task: str):"
+        },
+        {
+          "line": 131,
+          "signature": "def fix_code(self, code: str, language: str = None):"
+        },
+        {
+          "line": 347,
+          "signature": "def write_feature(self, task_description: str, language: str = \"python\"):"
+        },
+        {
+          "line": 417,
+          "signature": "def analyze_code(self, code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 441,
+          "signature": "def generate_website_feature(self, description: str, style: str = \"modern\"):"
+        },
+        {
+          "line": 454,
+          "signature": "def review_code_collaborative(self, code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 465,
+          "signature": "def analyze_repository(self, repo_name: str):"
+        },
+        {
+          "line": 480,
+          "signature": "def run_task(self, task: str, code: str = None, **kwargs):"
+        },
+        {
+          "line": 506,
+          "signature": "def print_summary(self):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "api_hub.py",
+        "app.py",
+        "auto_fixer.py",
+        "blockchain_logger.py",
+        "bug_detector.py",
+        "code_quality.py",
+        "collaborative_ai.py",
+        "enterprise_security.py",
+        "github_integration.py",
+        "language_detector.py"
+      ]
+    },
+    "sde_replacement.py": {
+      "language": "python",
+      "lines": 398,
+      "imports": [
+        "import os",
+        "import json",
+        "import subprocess",
+        "from datetime import datetime",
+        "from groq import Groq",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 12,
+          "signature": "def read_ticket(ticket: dict):"
+        },
+        {
+          "line": 62,
+          "signature": "def write_code(task: str, language: str = \"python\", context: str = \"\"):"
+        },
+        {
+          "line": 104,
+          "signature": "def write_tests(code: str, filename: str, language: str = \"python\"):"
+        },
+        {
+          "line": 144,
+          "signature": "def run_tests(test_code: str, test_filename: str):"
+        },
+        {
+          "line": 177,
+          "signature": "def review_code(code: str, filename: str):"
+        },
+        {
+          "line": 221,
+          "signature": "def respond_to_review(review_comments: list, code: str):"
+        },
+        {
+          "line": 264,
+          "signature": "def generate_pr_description(ticket: dict, code_result: dict, test_result: dict, "
+        },
+        {
+          "line": 293,
+          "signature": "def full_sde_workflow(ticket: dict):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "smart_ai.py": {
+      "language": "python",
+      "lines": 332,
+      "imports": [
+        "import os",
+        "import json",
+        "import time",
+        "from groq import Groq",
+        "from dotenv import load_dotenv"
+      ],
+      "functions": [
+        {
+          "line": 14,
+          "signature": "def assess_complexity(code: str, task: str):"
+        },
+        {
+          "line": 39,
+          "signature": "def chain_of_thought_analysis(code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 106,
+          "signature": "def self_correcting_solution(code: str, bug: dict, language: str = \"python\"):"
+        },
+        {
+          "line": 203,
+          "signature": "def context_aware_analysis(files: dict, target_file: str, language: str = \"pytho"
+        },
+        {
+          "line": 267,
+          "signature": "def smart_route(task: str, code: str, language: str = \"python\"):"
+        },
+        {
+          "line": 279,
+          "signature": "def process_orders(orders):"
+        },
+        {
+          "line": 288,
+          "signature": "def calculate_tax(amount, rate):"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "smart_computer_use.py": {
+      "language": "python",
+      "lines": 239,
+      "imports": [
+        "import pyautogui",
+        "import time",
+        "import json",
+        "import os",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from knowledge_base import format_knowledge_for_prompt"
+      ],
+      "functions": [
+        {
+          "line": 18,
+          "signature": "def ask_permission(action: str):"
+        },
+        {
+          "line": 29,
+          "signature": "def detect_app(task: str):"
+        },
+        {
+          "line": 51,
+          "signature": "def execute_action(action: dict):"
+        },
+        {
+          "line": 123,
+          "signature": "def plan_task(task: str):"
+        },
+        {
+          "line": 191,
+          "signature": "def run_task(task: str):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py",
+        "knowledge_base.py"
+      ]
+    },
+    "solution_generator.py": {
+      "language": "python",
+      "lines": 63,
+      "imports": [
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "import os",
+        "import json"
+      ],
+      "functions": [
+        {
+          "line": 10,
+          "signature": "def generate_solutions(code: str, bug: dict):"
+        },
+        {
+          "line": 41,
+          "signature": "def calculate_average(numbers):"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py"
+      ]
+    },
+    "storage.py": {
+      "language": "python",
+      "lines": 193,
+      "imports": [
+        "import sqlite3",
+        "import json",
+        "import os",
+        "from datetime import datetime"
+      ],
+      "functions": [
+        {
+          "line": 8,
+          "signature": "def init_db():"
+        },
+        {
+          "line": 53,
+          "signature": "def save_session(language, total_bugs, bugs_fixed, code_health, original_code, f"
+        },
+        {
+          "line": 67,
+          "signature": "def save_bug(session_id, bug_type, line_number, description, severity, solution_"
+        },
+        {
+          "line": 79,
+          "signature": "def save_successful_fix(language, bug_type, original_line, fixed_line):"
+        },
+        {
+          "line": 105,
+          "signature": "def get_known_fix(language, bug_type, original_line):"
+        },
+        {
+          "line": 122,
+          "signature": "def get_all_sessions():"
+        },
+        {
+          "line": 135,
+          "signature": "def print_stats():"
+        }
+      ],
+      "cross_file_dependencies": []
+    },
+    "voice_commands.py": {
+      "language": "python",
+      "lines": 179,
+      "imports": [
+        "import speech_recognition as sr",
+        "import pyttsx3",
+        "import os",
+        "import json",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from smart_computer_use import run_task",
+        "from smart_computer_use import run_task",
+        "from smart_computer_use import run_task",
+        "from smart_computer_use import run_task",
+        "from smart_computer_use import run_task"
+      ],
+      "functions": [
+        {
+          "line": 22,
+          "signature": "def speak(text: str):"
+        },
+        {
+          "line": 27,
+          "signature": "def listen():"
+        },
+        {
+          "line": 51,
+          "signature": "def process_command(command: str):"
+        },
+        {
+          "line": 91,
+          "signature": "def handle_intent(intent_data: dict, original_command: str):"
+        },
+        {
+          "line": 142,
+          "signature": "def run_voice_assistant():"
+        }
+      ],
+      "cross_file_dependencies": [
+        "app.py",
+        "computer_use.py",
+        "smart_computer_use.py"
+      ]
+    },
+    "website_generator.py": {
+      "language": "python",
+      "lines": 200,
+      "imports": [
+        "import os",
+        "import json",
+        "from groq import Groq",
+        "from dotenv import load_dotenv",
+        "from datetime import datetime",
+        "import subprocess"
+      ],
+      "functions": [
+        {
+          "line": 11,
+          "signature": "def generate_website(description: str, style: str = \"modern\"):"
+        },
+        {
+          "line": 103,
+          "signature": "def generate_landing_page(product_name: str, tagline: str, features: list):"
+        },
+        {
+          "line": 144,
+          "signature": "def save_website(html: str, filename: str = None):"
+        },
+        {
+          "line": 159,
+          "signature": "def open_website(filepath: str):"
+        }
+      ],
+      "cross_file_dependencies": []
+    }
+  },
+  "cross_file_bugs": [
+    {
+      "type": "PotentialImportError",
+      "file": "browser_automation.py",
+      "line": 4,
+      "severity": "medium",
+      "description": "Import 'playwright.async_api' on line 4 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "codebase_analyzer.py",
+      "line": 246,
+      "severity": "medium",
+      "description": "Import '' in line and '' on line 246 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "creative_suite.py",
+      "line": 3,
+      "severity": "medium",
+      "description": "Import 'PIL' on line 3 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "creative_suite.py",
+      "line": 4,
+      "severity": "medium",
+      "description": "Import 'reportlab.pdfgen' on line 4 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "creative_suite.py",
+      "line": 5,
+      "severity": "medium",
+      "description": "Import 'reportlab.lib.pagesizes' on line 5 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "creative_suite.py",
+      "line": 6,
+      "severity": "medium",
+      "description": "Import 'reportlab.lib' on line 6 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "multi_model_ai.py",
+      "line": 5,
+      "severity": "medium",
+      "description": "Import 'PIL' on line 5 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "scientific_computing.py",
+      "line": 8,
+      "severity": "medium",
+      "description": "Import 'numpy' on line 8 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "scientific_computing.py",
+      "line": 9,
+      "severity": "medium",
+      "description": "Import 'sklearn.linear_model' on line 9 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "scientific_computing.py",
+      "line": 10,
+      "severity": "medium",
+      "description": "Import 'sklearn.cluster' on line 10 \u2014 verify module exists"
+    },
+    {
+      "type": "PotentialImportError",
+      "file": "scientific_computing.py",
+      "line": 11,
+      "severity": "medium",
+      "description": "Import 'sklearn.preprocessing' on line 11 \u2014 verify module exists"
+    }
+  ],
+  "ai_analysis": {
+    "architecture": {
+      "pattern": "monolith",
+      "quality": "fair",
+      "description": "The codebase has a monolithic architecture with multiple interconnected components. While it has some organization with separate files for different functionalities, it can be further modularized for better scalability and maintainability."
+    },
+    "cross_file_bugs": [
+      {
+        "bug_id": 1,
+        "files_involved": [
+          "api_hub.py",
+          "app.py"
+        ],
+        "type": "inconsistent API key handling",
+        "description": "The API key is loaded from environment variables in both api_hub.py and app.py, which can lead to inconsistencies if not managed properly.",
+        "severity": "medium",
+        "fix": "Consider centralizing API key management in a single file or using a more robust secrets management system."
+      },
+      {
+        "bug_id": 2,
+        "files_involved": [
+          "auto_fixer.py",
+          "bug_detector.py"
+        ],
+        "type": "potential code injection vulnerability",
+        "description": "The auto_fixer.py file executes code using subprocess.run, which can lead to code injection vulnerabilities if not properly sanitized.",
+        "severity": "high",
+        "fix": " Ensure that all code executed by auto_fixer.py is properly sanitized and validated to prevent code injection attacks."
+      }
+    ],
+    "security_issues": [
+      {
+        "file": "api_hub.py",
+        "type": "hardcoded API key",
+        "severity": "critical",
+        "description": "The API key is hardcoded in the file, which is a significant security risk if the code is exposed or accessed by unauthorized parties."
+      },
+      {
+        "file": "biometric_authentication.py",
+        "type": "insecure biometric data storage",
+        "severity": "high",
+        "description": "The biometric data is stored in a SQLite database without proper encryption or access controls, which can lead to unauthorized access or data breaches."
+      },
+      {
+        "file": "blockchain_logger.py",
+        "type": "insecure logging practices",
+        "severity": "medium",
+        "description": "The logging practices in this file may not be secure, as sensitive data may be logged without proper redaction or encryption."
+      }
+    ],
+    "recommendations": [
+      "Refactor the codebase to follow a more modular and scalable architecture",
+      "Implement a robust secrets management system for API keys and other sensitive data",
+      "Use secure coding practices, such as input validation and sanitization, to prevent code injection vulnerabilities",
+      "Implement proper encryption and access controls for biometric data storage",
+      "Review and improve logging practices to ensure sensitive data is not exposed"
+    ],
+    "complexity_score": 60,
+    "maintainability_score": 40,
+    "summary": "The codebase has a fair architecture but requires significant improvements in security, maintainability, and scalability. Addressing the identified bugs, security issues, and implementing the recommended improvements will be essential for ensuring the long-term health and reliability of the codebase."
+  },
+  "timestamp": "2026-03-21 13:32:39"
+}

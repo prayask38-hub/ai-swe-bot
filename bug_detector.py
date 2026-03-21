@@ -5,7 +5,7 @@ import json
 
 load_dotenv()
 
-client = Groq(api_key=os.getenv("GROK_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def detect_bugs(code: str, language: str = "python"):
     prompt = f"""You are an expert code debugger. Analyze this {language} code and find ALL bugs and errors.
